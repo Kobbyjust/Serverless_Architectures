@@ -5,7 +5,7 @@
 
 import boto3, json, os, decimal
 
-SM_ARN = 'YOUR_STATEMACHINE_ARN'
+SM_ARN = '[Update with your state machine arn]'
 
 sm = boto3.client('stepfunctions')
 

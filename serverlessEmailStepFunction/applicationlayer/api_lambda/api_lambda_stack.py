@@ -17,10 +17,10 @@ class ApiLambdaStack(Stack):
 
         #Creating SES Identities
         sender_email_identity = ses.CfnEmailIdentity(self, "MySenderEmailIdentity",
-        email_identity="sagarinokoeaws1+main@gmail.com",)
+        email_identity="sagarinokoeaws1+main1@gmail.com",)
 
         receiver_email_identity = ses.CfnEmailIdentity(self, "MyReceiverEmailIdentity",
-        email_identity="sagarinokoeaws1+receiver@gmail.com",)
+        email_identity="sagarinokoeaws1+receiver1@gmail.com",)
 
 
         #Creating Role for Lamda and APIGateway
@@ -64,38 +64,56 @@ class ApiLambdaStack(Stack):
         #proxy=True
         )
 
-        base_api.root.add_method("ANY")
+        #base_api.root.add_method("ANY")
 
         #Create a resource named "myserverless" on the base API
-        api_resource = base_api.root.add_resource('EmailStepFunction')
-
+        api_resource = base_api.root.add_resource(
+            'emailstepfunction',
+            default_cors_preflight_options=apigw.CorsOptions(
+                allow_methods=['GET','POST', 'OPTIONS'],
+                allow_origins=apigw.Cors.ALL_ORIGINS)
+        
+        )
 
         #Create API Integration Response object: https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_apigateway/IntegrationResponse.html
-        integration_response = apigw.IntegrationResponse(
-            status_code="200",
-            response_templates={"application/json": ""},
-
+        processing_lambda_integration = apigw.LambdaIntegration(
+            processing_lambda,
+            proxy=True,
+            integration_responses=[
+                apigw.IntegrationResponse(
+                    status_code="200",
+                    response_parameters={
+                        'method.response.header.Access-Control-Allow-Origin': "'*'"
+                    }
+                )
+            ]
         )
 
         #Create a Method Response Object: https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_apigateway/MethodResponse.html
-        method_response = apigw.MethodResponse(status_code="200")
+        method_response = apigw.MethodResponse(
+            status_code="200",
+            response_parameters={
+                    'method.response.header.Access-Control-Allow-Origin': True
+                })
 
         #Add the API GW Integration to the "example" API GW Resource
         api_resource.add_method(
             "POST",
+            apigw.LambdaIntegration(processing_lambda),    
             method_responses=[method_response]
         ) 
 
         # Step Function Definition
         wait_job = _aws_stepfunctions.Wait(
-            self, "Wait 30 Seconds",
-            time=_aws_stepfunctions.WaitTime.duration(
-                Duration.seconds(30))
+            self, "Timer",
+            time=_aws_stepfunctions.WaitTime.timestamp_path("$.waitSeconds"),
+            # time=_aws_stepfunctions.WaitTime.duration(
+            #     Duration.seconds(30))
         )
 
         email_job = _aws_stepfunctions_tasks.LambdaInvoke(
             self, "Send Email",
-            lambda_function=email_lambda
+            lambda_function=email_lambda,
             #output_path="$.Payload"
         )
 

@@ -22,10 +22,6 @@ class StaticSiteStack(Stack):
             "SiteBucketName",
             value=site.bucket.bucket_name,
         )
-        CfnOutput(
-            self,
-            "DistributionId",
-            value=site.distribution.distribution_id,
-        )
+
 
 #

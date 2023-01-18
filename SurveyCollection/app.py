@@ -5,7 +5,7 @@ import aws_cdk as cdk
 
 from survey_collection.survey_collection_stack import SurveyCollectionStack
 from s3CloudfrontHostingSite.site_stack import StaticSiteStack
-
+from applicationlayer.api_lambda.api_lambda_stack import ApiLambdaStack
 
 app = cdk.App()
 #SurveyCollectionStack(app, "survey-collection")
@@ -31,7 +31,9 @@ StaticSite = StaticSiteStack(
     scope=app,
     construct_id=f"{props['namespace']}-stack",
     props=props,
-    description="Static Site using S3, CloudFront and Route53",
+    description="Static Site using S3 and CloudFront",
 )
+
+ApiLambdaStack(app, "ApiLambdaStack")
 
 app.synth()
