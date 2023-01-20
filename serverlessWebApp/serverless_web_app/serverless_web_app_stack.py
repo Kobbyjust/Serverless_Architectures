@@ -19,8 +19,7 @@ class ServerlessWebAppStack(Stack):
 
         amplify_app = amplify.CfnApp(self, "MyApp",
             name="ServerlessWebStack",
-            #access_token="accessToken",
-            #repository="repository",
+            
         )
 
         #Creating the compute Lambda function
@@ -39,7 +38,7 @@ class ServerlessWebAppStack(Stack):
         api_resource = base_api.root.add_resource(
             'serverlessWeb',
             default_cors_preflight_options=apigw.CorsOptions(
-                allow_methods=['GET','POST', 'OPTIONS'],
+                allow_methods=apigw.Cors.ALL_METHODS,
                 allow_origins=apigw.Cors.ALL_ORIGINS,
                 allow_headers=apigw.Cors.DEFAULT_HEADERS
                 )       
