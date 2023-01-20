@@ -1,8 +1,21 @@
 
-# Welcome to your CDK Python project!
+# Welcome to serverlessWebApp CDK Python project!
 
 You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`serverless_web_app_stack`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+This project consists of
+1. AWS Amplify: for hosting the frontend application
+2. API Gateway: which sends a POST request to a lambda function
+3. Lambda: For Processing (Inserting data into a database)
+4. DynamoDB: A NoSql database
+
+# Key things to note before running this project
+ Upon running this app stack all the resources for this architecture will be deploy
+ 
+ ---Note:
+    1. For this particular project we will be hosting our frontend(index.html) directly on AWS Amplify without connecting to a source repo(Github, CodeCommit). Update the API Gateway in the index.html file
+
+    2. Also do well to update the right database name in the lambda function
+
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
