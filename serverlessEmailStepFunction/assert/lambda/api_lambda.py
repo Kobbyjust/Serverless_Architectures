@@ -5,7 +5,7 @@
 
 import boto3, json, os, decimal
 
-SM_ARN = '[Update with your state machine arn]'
+SM_ARN = 'YOUR_STATEMACHINE_ARN'
 
 sm = boto3.client('stepfunctions')
 
@@ -50,3 +50,4 @@ class DecimalEncoder(json.JSONEncoder):
         if isinstance(obj, decimal.Decimal):
             return int(obj)
         return super(DecimalEncoder, self).default(obj)
+

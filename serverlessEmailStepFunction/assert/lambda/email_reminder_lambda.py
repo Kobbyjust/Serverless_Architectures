@@ -1,6 +1,6 @@
 import boto3, os, json
 
-FROM_EMAIL_ADDRESS = 'sagarinokoeaws1+main@gmail.com'
+FROM_EMAIL_ADDRESS = 'REPLACE_ME'
 
 ses = boto3.client('ses')
 
@@ -15,3 +15,4 @@ def lambda_handler(event, context):
         }
     )
     return 'Success!'
+  
