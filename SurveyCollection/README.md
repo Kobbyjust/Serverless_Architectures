@@ -1,6 +1,8 @@
 
 # Welcome to your CDK Python project!
 
+## This Project is yet to be completed
+
 You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`survey_collection_stack`)
 which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
 
